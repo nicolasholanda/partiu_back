@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  partiu_keycloak:
+    container_name: partiu_keycloak
+    image: jboss/keycloak:16.1.1
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"
+        max-size: "30m"
+    env_file: env/keycloak.env
+    depends_on:
+      - partiu_postgres
+    ports:
+      - "8091:8080"
+
+
+  partiu_postgres:
+    build: ./postgres
+    container_name: partiu_postgres
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"
+        max-size: "30m"
+    ports:
+      - "5432:5432"
+    volumes:
+      - /volumes/partiu/postgres/db:/var/lib/postgresql/data
+    env_file:
+      - env/postgres.env

@@ -1,0 +1,30 @@
+-- KEYCLOAK
+
+CREATE USER keycloak WITH PASSWORD 'keycloak';
+
+ALTER USER keycloak WITH SUPERUSER;
+
+CREATE DATABASE keycloak WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'pt_BR.UTF-8' LC_CTYPE = 'pt_BR.UTF-8';
+
+ALTER DATABASE keycloak OWNER TO keycloak;
+
+
+-- APPLICATION DATABASE
+
+--
+-- Name: partiu; Type: DATABASE; Schema: -; Owner: partiu
+--
+
+CREATE USER partiu WITH PASSWORD 'partiu';
+
+ALTER USER partiu WITH SUPERUSER;
+
+CREATE DATABASE partiu WITH OWNER = partiu TABLESPACE = pg_default TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'pt_BR.UTF-8' LC_CTYPE = 'pt_BR.UTF-8' CONNECTION LIMIT = -1;
+
+\connect partiu
+
+CREATE SCHEMA partiu AUTHORIZATION partiu;
+
+GRANT ALL ON SCHEMA partiu TO partiu WITH GRANT OPTION;
+
+CREATE EXTENSION unaccent SCHEMA partiu;
