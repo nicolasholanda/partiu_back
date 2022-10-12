@@ -23,10 +23,25 @@ create table partiu.event
     name             varchar(255)   not null,
     price            numeric(19, 2) not null,
     status           varchar(255)   not null,
+    creator_id       varchar(255)   not null,
     location_id      bigint         not null
         constraint fk_location
             references partiu.location
 );
 
 alter table partiu.event
+    owner to partiu;
+
+create table partiu.event_user
+(
+    user_id       varchar(255) not null,
+    creation_date timestamp    not null,
+    paid          boolean      not null,
+    event_id      bigint       not null
+        constraint fk_event
+            references partiu.event,
+    primary key (event_id, user_id)
+);
+
+alter table partiu.event_user
     owner to partiu;

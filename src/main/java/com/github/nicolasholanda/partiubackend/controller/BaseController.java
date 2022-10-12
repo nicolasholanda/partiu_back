@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public abstract class BaseController<T extends BaseEntity<T>> {
 
-    private final BaseService<T> service;
+    protected final BaseService<T> service;
 
     @GetMapping
     public Page<T> findPaginated(Pageable pageable) {

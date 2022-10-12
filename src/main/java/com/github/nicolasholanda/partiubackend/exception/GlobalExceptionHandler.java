@@ -6,6 +6,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -117,6 +118,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<StandardError> handleException(MissingServletRequestParameterException e, HttpServletRequest request) {
         var message = format("O parâmetro obrigatório %s não foi enviado.", e.getParameterName());
+
+        return ResponseEntity.status(BAD_REQUEST).body(
+                new StandardError(BAD_REQUEST.value(), message, System.currentTimeMillis())
+        );
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<StandardError> httpMessageNotReadable(HttpMessageNotReadableException e, HttpServletRequest request) {
+        var message = "O corpo da mensagem não foi reconhecido.";
 
         return ResponseEntity.status(BAD_REQUEST).body(
                 new StandardError(BAD_REQUEST.value(), message, System.currentTimeMillis())
